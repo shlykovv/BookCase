@@ -27,6 +27,7 @@ class BookBase:
                 cls._data = json.loads(file.read())
             else:
                 cls._data = {}
+            print("Библиотека выгружена")
         return cls._data
 
     def __new__(cls, *args, **kwargs):
