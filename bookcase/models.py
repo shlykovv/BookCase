@@ -139,17 +139,11 @@ class BookSearch(Book):
     автора или год издания
     """
     def book_search(self, item_book: str):
-        length = 0
-        for book_id in self._data:
-            data_items = self._data[book_id].values()
-            if self._check_items(item_book, data_items):
-                print(self._data[book_id])
-                length += 1
-        if length > 0:
-            return f'Количество книг: {length}'
-        else:
-            logger.info('-Пусто-')
-            return '-Пусто-'
+        results = []
+        for book_id, book_info in self._data.items():
+            if self._check_items(item_book, book_info.values()):
+                results.append(book_info)
+        return results
 
 
 class BookDelete(Book):

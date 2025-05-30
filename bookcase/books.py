@@ -40,7 +40,12 @@ def search_book(book_item: str):
     """
     books = BookSearch()
     books = books.book_search(book_item)
-    return books
+    if books:
+        for book in books:
+            print(book)
+        return f'Найдено книг: {len(books)}'
+    else:
+        return 'Книги не найдены'
 
 
 def put_book():
