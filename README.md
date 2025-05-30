@@ -1,4 +1,4 @@
-# Задание - BookCase
+# BookCase
 
 ****BookCase - проект позволяет:****
 

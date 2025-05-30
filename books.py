@@ -1,6 +1,7 @@
 from models import (BookAllGet, BookAdd,
                     BookPut, BookSearch,
                     BookDelete)
+from book_logger import logger
 
 def get_books():
     """
@@ -11,21 +12,25 @@ def get_books():
     return books()
 
 
-def add_book():
+def add_book(title: str, author: str, published: str):
     """
     Функция для взаимодействия с классом
     BookAdd, для добавления новой книги
     """
+    try:
+        book = BookAdd(title=title, author=author, published=published)
+        return book.append()
+    except ValueError as e:
+        logger.error(f"Ошибка при добвлении книги: {e}")
+        return f"Ошибка: {e}"
+
+
+def input_add_book():
     title = input('Название: ')
     author = input('Автор: ')
     published = input('год выпуска: ')
-    book = BookAdd(
-        title=title,
-        author=author,
-        published=published
-    )
-    add = book.append()
-    return add
+    result = add_book(title, author, published)
+    print(result)
 
 
 def search_book(book_item: str):

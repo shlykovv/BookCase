@@ -1,6 +1,7 @@
 import os
 import json
 from book_logger import logger
+from storage import JsonBookStorage
 
 
 class StatusBook:
@@ -17,8 +18,7 @@ class BookBase:
     """
     Базовый класс для работы с библиотекой книг
     """
-    _data: dict[int, dict[str]] = None
-    _filename: str = 'archive_books.json'
+    _storage = JsonBookStorage()
 
     @classmethod
     def _read_file(cls):
@@ -30,10 +30,11 @@ class BookBase:
             print("Библиотека выгружена")
         return cls._data
 
-    def __new__(cls, *args, **kwargs):
-        if cls._data is None:
-            cls._data = cls._read_file()
-        return super().__new__(cls)
+    def __init__(self):
+        self._data = self._storage.load_data()
+    
+    def _save(self):
+        self._storage.save_data(self._data)
 
 
 class Book(BookBase):
