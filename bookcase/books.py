@@ -74,7 +74,7 @@ if __name__ == '__main__':
             'Выход - 6: ')
         match answer:
             case '1': print(get_books())
-            case '2': print(add_book())
+            case '2': input_add_book()
             case '3':
                 item = input(
                     'Введите Заголовок, автора или год издания: ').lower()

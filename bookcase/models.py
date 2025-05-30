@@ -49,6 +49,7 @@ class Book(BookBase):
             author: str = None,
             published: str = None
     ) -> None:
+        super().__init__()
         self.title = title
         self.author = author
         self.published = published
@@ -80,15 +81,6 @@ class Book(BookBase):
             if self.title == self._data[item]['title']:
                 return True
         return False
-
-    def _save(self):
-        try:
-            with open(self._filename, 'w', encoding='utf-8') as file:
-                file.write(json.dumps(
-                    self._data, indent=4, ensure_ascii=False))
-        except json.JSONDecodeError:
-            logger.error('Ошибка добавления книги в библиотеку')
-            raise ValueError('Ошибка добавления книги в библиотеку')
 
 
 class BookAllGet(Book):

@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import patch, mock_open, Mock
 
-from models import (StatusBook, BookAllGet,
+from bookcase.models import (StatusBook, BookAllGet,
                     BookAdd, BookPut)
 
 
