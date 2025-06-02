@@ -1,7 +1,7 @@
-from models import (BookAllGet, BookAdd,
+from bookcase.models import (BookAllGet, BookAdd,
                     BookPut, BookSearch,
                     BookDelete)
-from book_logger import logger
+from bookcase.book_logger import logger
 
 def get_books():
     """

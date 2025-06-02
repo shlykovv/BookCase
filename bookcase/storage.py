@@ -1,7 +1,7 @@
 import json
 import os
 from typing import Dict
-from book_logger import logger
+from bookcase.book_logger import logger
 
 class JsonBookStorage:
     def __init__(self, filename='archive_books.json'):
