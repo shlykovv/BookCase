@@ -1,7 +1,7 @@
 import os
 import json
 import pytest
-from bookcase.models import BookAdd, BookDelete, BookSearch, BookAllGet
+from bookcase.models import BookAdd, BookDelete, BookSearch, BookAllGet, BookPut
 from bookcase.storage import JsonBookStorage
 
 
@@ -59,3 +59,35 @@ def test_delete_book(temp_storage):
     
     data = getter()
     assert data == {} or "1" not in data
+
+
+def test_update_book(temp_storage):
+    book = BookAdd(title="To Update", author="Author", published="2000", storage=temp_storage)
+    book.append()
+    
+    updater = BookPut(storage=temp_storage)
+    result = updater.path(book_id=1, status='В наличие')
+    
+    assert result == f'Данные книги с id 1 обновлены'
+    
+    reader = BookAllGet(storage=temp_storage)
+    data = reader()
+    assert data['1']['status'] == 'В наличие'
+
+
+def test_search_book(temp_storage):
+    book1 = BookAdd(title='1984', author='George Orwell', published='1949', storage=temp_storage)
+    book1.append()
+    
+    book2 = BookAdd(title='The Hobbit', author='J.R.R Tolkien', published='1949', storage=temp_storage)
+    book2.append()
+    
+    book_search = BookSearch(storage=temp_storage)
+    result_by_title = book_search.book_search(item_book='1984')
+    
+    result_by_year = book_search.book_search(item_book='1949')
+    
+    assert result_by_title == 'Кол-во книг: 1'
+    assert result_by_year == 'Кол-во книг: 2'
+    
+    
