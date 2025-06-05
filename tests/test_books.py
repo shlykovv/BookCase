@@ -61,6 +61,15 @@ def test_delete_book(temp_storage):
     assert data == {} or "1" not in data
 
 
+def test_delete_nonexistent_book(temp_storage):
+    deleter = BookDelete(storage=temp_storage)
+    
+    with pytest.raises(KeyError) as excinfo:
+        deleter.book_delete(42)
+        
+    assert 'Книга с id: 42 не найдена' in str(excinfo.value)
+
+
 def test_update_book(temp_storage):
     book = BookAdd(title="To Update", author="Author", published="2000", storage=temp_storage)
     book.append()
@@ -73,6 +82,15 @@ def test_update_book(temp_storage):
     reader = BookAllGet(storage=temp_storage)
     data = reader()
     assert data['1']['status'] == 'В наличие'
+
+
+def test_update_nonexistent_book(temp_storage):
+    updater = BookPut(storage=temp_storage)
+    
+    with pytest.raises(KeyError) as excinfo:
+        updater.path(book_id=99, status='На складе')
+    
+    assert 'Книга с id: 99 не найдена' in str(excinfo.value)
 
 
 def test_search_book(temp_storage):
@@ -89,5 +107,13 @@ def test_search_book(temp_storage):
     
     assert result_by_title == 'Кол-во книг: 1'
     assert result_by_year == 'Кол-во книг: 2'
+
+
+def test_search_nonexistent_book(temp_storage):
+    book = BookAdd(title='Dune', author='Frank Herbert', published='1965', storage=temp_storage)
+    book.append()
     
+    book_search = BookSearch(storage=temp_storage)
+    result = book_search.book_search(item_book='Nonexistent Title')
     
+    assert result == '-Пусто-'
